@@ -1,5 +1,5 @@
 import React from 'react';
-import { DynamicComponent, DynamicComponentData } from '../dynamic-components';
+import { DynamicComponent, DynamicComponentData, DynamicComponentEditor } from '../dynamic-components';
 
 const components: DynamicComponentData[] = [
     {
@@ -7,11 +7,11 @@ const components: DynamicComponentData[] = [
         id: "test-1",
         buttons: [
             {
-                text: "Button 1",
+                label: "Button 1",
                 color: "primary"
             },
             {
-                text: "Button 2",
+                label: "Button 2",
                 color: "secondary"
             },
         ]
@@ -26,7 +26,7 @@ const components: DynamicComponentData[] = [
         id: "test-3",
         buttons: [
             {
-                text: "Button 3",
+                label: "Button 3",
                 color: "primary"
             },
         ]
@@ -35,6 +35,12 @@ const components: DynamicComponentData[] = [
 
 export default function PageBuilder() {
     return <div>
-        {components.map(data => <DynamicComponent {...data}/>)}
+        <div>
+            {components.map(data => <DynamicComponent {...data}/>)}
+        </div>
+        <hr/>
+        <div>
+            {components.map(data => <DynamicComponentEditor {...data} data={data} onChange={console.log}/>)}
+        </div>
     </div>
 }
