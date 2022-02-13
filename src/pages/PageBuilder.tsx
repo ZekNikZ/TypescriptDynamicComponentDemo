@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import { DynamicComponent, DynamicComponentData, DynamicComponentEditor } from '../dynamic-components';
 
-const components: DynamicComponentData[] = [
+const initialComponents: DynamicComponentData[] = [
     {
         type: "button-group",
         id: "test-1",
@@ -33,14 +33,38 @@ const components: DynamicComponentData[] = [
     }
 ]
 
+type DataMap = Record<string, DynamicComponentData>;
+type State = { ids: string[], components: DataMap };
+const componentIds = initialComponents.map(c => c.id);
+const componentsMap: DataMap = initialComponents.reduce((acc, comp) => ({...acc, [comp.id]: comp}), {});
+
+function reducer(state: State, action: { type: 'update' | 'add', id: string, data: DynamicComponentData } | { type: 'remove', id: string }) {
+    const { ids, components } = state;
+    const { type, id } = action;
+
+    switch (type) {
+        case 'update':
+            return { ids, components: { ...components, [id]: action.data } };
+        case 'add':
+            return { ids: [...ids, id], components: { ...components, [id]: action.data } };
+        case 'remove':
+            delete components[id];
+            return { ids: ids.filter(_id => _id !== id) , components }
+    }
+
+    return state;
+}
+
 export default function PageBuilder() {
+    const [{ ids, components }, dispatch] = useReducer(reducer, { ids: componentIds, components: componentsMap });
+
     return <div>
         <div>
-            {components.map(data => <DynamicComponent {...data}/>)}
+            {ids.map(id => <DynamicComponent key={id} {...components[id]}/>)}
         </div>
         <hr/>
         <div>
-            {components.map(data => <DynamicComponentEditor {...data} data={data} onChange={console.log}/>)}
+            {ids.map(id => <DynamicComponentEditor key={id} {...components[id]} data={components[id]} onChange={data => dispatch({ type: 'update', id: data.id, data })}/>)}
         </div>
     </div>
 }
