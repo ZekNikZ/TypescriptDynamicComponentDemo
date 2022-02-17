@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import DynamicPage from './pages/DynamicPage';
 import PageBuilder from './pages/PageBuilder';
 import SAMPLE_COMPONENTS from './utils/example';

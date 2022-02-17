@@ -1,0 +1,47 @@
+@mixin editor-covered {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: -5px;
+    height: calc(100% + 10px);
+    width: 100%;
+}
+
+.dynamic-component {
+    position: relative;
+    transition: background-color 0.3s;
+
+    &.editable {
+        background-color: #E5E5E5;
+
+        &:hover {
+            background-color: #FFFFCC;
+        }
+
+        &.selected {
+            background-color: #CCFFCC;
+        }
+
+        &::after {
+            @include editor-covered;
+        }
+    }
+}
+
+.add-button {
+    position: relative;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    background-color: #CCCCFF;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #AAAAFF;
+    }
+
+    &::after {
+        @include editor-covered;
+    }
+}
