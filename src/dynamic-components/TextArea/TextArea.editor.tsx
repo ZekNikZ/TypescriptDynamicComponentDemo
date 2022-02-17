@@ -1,7 +1,7 @@
 import { TextAreaComponentIdType, TextAreaProps } from "."
-import { DynamicComponentEditorProps } from "../types"
+import { DCEditorProps } from "../types"
 
-const TextAreaComponentEditor: React.FC<DynamicComponentEditorProps<TextAreaComponentIdType, TextAreaProps>> = ({ id, data, onChange }) => {
+const TextAreaComponentEditor: React.FC<DCEditorProps<TextAreaComponentIdType, TextAreaProps>> = ({ id, data, onChange }) => {
     const { text } = data;
     return <div>{id}: <input type="text" value={text} onChange={(event) => onChange({ ...data, text: event.target.value })}/></div>
 }

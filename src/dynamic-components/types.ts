@@ -3,8 +3,8 @@ import React from "react";
 export interface DynamicComponentInfo<Type, Props> {
     id: Type;
     name: string;
-    component: React.FC<Props>;
-    editor: React.FC<DynamicComponentEditorProps<Type, Props>>;
+    component: React.FC<DCProps<Type, Props>>;
+    editor: React.FC<DCEditorProps<Type, Props>>;
 }
 
 export interface DynamicComponentProps<Type> {
@@ -12,7 +12,18 @@ export interface DynamicComponentProps<Type> {
     id: string;
 }
 
-export interface DynamicComponentEditorProps<Type, Data> {
+export interface DynamicComponentPropsForEditor<Data> {
+    inEditor?: boolean;
+    selected?: boolean;
+    onSelected?: (data: Data) => void;
+}
+
+export interface DCProps<Type, Props> extends DynamicComponentPropsForEditor<Props> {
+    type: Type;
+    data: Props;
+}
+
+export interface DCEditorProps<Type, Data> {
     type: Type;
     id: string;
     onChange: (data: Data) => void;
