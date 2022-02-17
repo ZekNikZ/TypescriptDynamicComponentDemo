@@ -17,6 +17,11 @@ export function DynamicComponent<Type extends keyof typeof DYNAMIC_COMPONENT_REG
     return DYNAMIC_COMPONENT_REGISTRY[props.type].component(props as never);
 }
 
-export function DynamicComponentEditor<Type extends keyof typeof DYNAMIC_COMPONENT_REGISTRY, Props extends DCEditorProps<Type, Extract<DynamicComponentData,{type: Type}>>>(props: Props) {
-    return DYNAMIC_COMPONENT_REGISTRY[props.type].editor(props as never);
+export function DynamicComponentEditor<Type extends keyof typeof DYNAMIC_COMPONENT_REGISTRY, Props extends DCEditorProps<Type, Extract<DynamicComponentData,{type: Type}>>>(props: Props & { onDelete: (id: string) => void, onMoveUp: (id: string) => void, onMoveDown: (id: string) => void }) {
+    return <div>
+        {DYNAMIC_COMPONENT_REGISTRY[props.type].editor(props as never)}
+        <button onClick={() => props.onDelete(props.id)}>Remove</button>
+        <button onClick={() => props.onMoveUp(props.id)}>Move Up</button>
+        <button onClick={() => props.onMoveDown(props.id)}>Move Down</button>
+    </div>;
 }
