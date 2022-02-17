@@ -71,7 +71,7 @@ export default function PageBuilder() {
 
     return <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex' }}>
         <div style={{ flex: '3' }}>
-            <DynamicPage ids={ids} components={components} inEditor selected={selected} onSelected={(data) => setSelected(data.id)} onAddClick={onAddClick}/>
+            <DynamicPage ids={ids} components={components} inEditor selected={selected} onSelected={setSelected} onAddClick={onAddClick}/>
         </div>
         <div style={{ flex: '1', padding: '10px', backgroundColor: '#DDDDDD' }}>
             {selected && <DynamicComponentEditor {...components[selected]} data={components[selected]} onChange={data => dispatch({ type: 'update', id: data.id, data })} onDelete={onDelete} onMoveUp={onMoveUp} onMoveDown={onMoveDown}/>}

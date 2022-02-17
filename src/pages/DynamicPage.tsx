@@ -1,4 +1,4 @@
-import { DynamicComponent, DynamicComponentData } from "../dynamic-components";
+import { DynamicComponent } from "../dynamic-components";
 import { DataMap } from "../utils/types";
 
 type Props = {
@@ -8,18 +8,18 @@ type Props = {
     { inEditor: false }
     | {
         inEditor: true;
-        onSelected: (data: DynamicComponentData) => void;
+        onSelected: (id: string) => void;
         selected: string;
         onAddClick: (id?: string) => void;
     }
 );
 
-export default function DynamicPage({ ids, components, ...rest } : Props) {
+export default function DynamicPage({ ids, components, ...props } : Props) {
     return <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', gap: '10px' }}>
         {ids.map(id => <>
-            {rest.inEditor && <div key={`${id}-editor`} style={{ height: '20px', lineHeight: '20px', textAlign: 'center', backgroundColor: '#CCCCFF' }} onClick={() => rest.onAddClick(id)}>+</div>}
-            <DynamicComponent key={id} type={components[id].type} data={components[id]} selected={rest.inEditor && id === rest.selected} inEditor={rest.inEditor} onSelected={rest.inEditor ? rest.onSelected : undefined}/>
+            {props.inEditor && <div key={`${id}-editor`} style={{ height: '20px', lineHeight: '20px', textAlign: 'center', backgroundColor: '#CCCCFF' }} onClick={() => props.onAddClick(id)}>+</div>}
+            <div key={id} className={`dynamic-component ${props.inEditor ? 'editable' : ''} ${props.inEditor && props.selected === id ? 'selected' : ''}`} onClick={() => props.inEditor && props.onSelected(id)}><DynamicComponent key={id} type={components[id].type} data={components[id]} inEditor={props.inEditor} selected={props.inEditor && props.selected === id}/></div>
         </>)}
-        {rest.inEditor && <div style={{ height: '20px', lineHeight: '20px', textAlign: 'center', backgroundColor: '#CCCCFF' }} onClick={() => rest.onAddClick()}>+</div>}
+        {props.inEditor && <div style={{ height: '20px', lineHeight: '20px', textAlign: 'center', backgroundColor: '#CCCCFF' }} onClick={() => props.onAddClick()}>+</div>}
     </div>
 }
