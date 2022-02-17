@@ -1,11 +1,11 @@
 import { DynamicComponent, DynamicComponentData } from "../dynamic-components";
-import { DataMap } from "./types";
+import { DataMap } from "../utils/types";
 
 type Props = {
     ids: string[];
     components: DataMap;
 } & (
-    { inEditor: undefined | false }
+    { inEditor: false }
     | {
         inEditor: true;
         onSelected: (data: DynamicComponentData) => void;

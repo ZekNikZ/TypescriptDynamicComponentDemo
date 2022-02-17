@@ -1,3 +1,6 @@
+import { DynamicComponentData } from "../dynamic-components";
+import { DataMap } from "./types";
+
 export function insertAt<T>(arr: T[], index: number, element: T) {
     return [ ...arr.slice(0, index), element, ...arr.slice(index) ];
 }
@@ -19,4 +22,12 @@ export function moveElement<T>(arr: T[], element: T, offset: number) {
 	}
 
     return array;
+}
+
+
+export function extractStateFromJSON(initialComponents: DynamicComponentData[]) {
+    const componentIds = initialComponents.map(c => c.id);
+    const componentsMap: DataMap = initialComponents.reduce((acc, comp) => ({...acc, [comp.id]: comp}), {});
+
+    return [ componentIds, componentsMap ] as const;
 }

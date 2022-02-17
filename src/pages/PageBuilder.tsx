@@ -1,44 +1,12 @@
 import React, { useReducer, useState } from 'react';
 import { DynamicComponentData, DynamicComponentEditor } from '../dynamic-components';
-import { insertAt, moveElement } from '../dynamic-components/utils';
+import { extractStateFromJSON, insertAt, moveElement } from '../utils/utils';
 import DynamicPage from './DynamicPage';
-import { DataMap } from './types';
-
-const initialComponents: DynamicComponentData[] = [
-    {
-        type: "button-group",
-        id: "test-1",
-        buttons: [
-            {
-                label: "Button 1",
-                color: "primary"
-            },
-            {
-                label: "Button 2",
-                color: "secondary"
-            },
-        ]
-    },
-    {
-        type: "text-area",
-        id: "test-2",
-        text: "Boom!"
-    },
-    {
-        type: "button-group",
-        id: "test-3",
-        buttons: [
-            {
-                label: "Button 3",
-                color: "primary"
-            },
-        ]
-    }
-]
+import { DataMap } from '../utils/types';
+import SAMPLE_COMPONENTS from '../utils/example';
 
 type State = { ids: string[], components: DataMap };
-const componentIds = initialComponents.map(c => c.id);
-const componentsMap: DataMap = initialComponents.reduce((acc, comp) => ({...acc, [comp.id]: comp}), {});
+const [ componentIds, componentsMap ] = extractStateFromJSON(SAMPLE_COMPONENTS);
 
 type Action =
     | { type: 'update', id: string, data: DynamicComponentData }
@@ -101,8 +69,8 @@ export default function PageBuilder() {
         dispatch({ type: 'move-down', id });
     }
 
-    return <div style={{ position: 'absolute', width: '100%', height: '100%', display: 'flex' }}>
-        <div style={{ flex: '3', padding: '20px' }}>
+    return <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex' }}>
+        <div style={{ flex: '3' }}>
             <DynamicPage ids={ids} components={components} inEditor selected={selected} onSelected={(data) => setSelected(data.id)} onAddClick={onAddClick}/>
         </div>
         <div style={{ flex: '1', padding: '10px', backgroundColor: '#DDDDDD' }}>
